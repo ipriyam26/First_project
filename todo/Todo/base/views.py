@@ -1,5 +1,5 @@
 from typing import Any, Dict, Optional, Type, Union
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -26,7 +26,6 @@ class CustomLoginView(LoginView):
 class RegisterView(FormView):
     template_name: str = 'base/register.html'
     form_class = UserCreationForm
-    redirect_authenticated_user: bool = True 
     success_url: Optional[str] = reverse_lazy('tasks')
     
     def form_valid(self,form):
@@ -35,7 +34,10 @@ class RegisterView(FormView):
             login(self.request, user)
         return super(RegisterView,self).form_valid(form)
     
-
+    def get(self,*args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('tasks')
+        return super(RegisterView,self).get(*args,**kwargs)
 
 class TaskList(LoginRequiredMixin,ListView):
     model = Task
