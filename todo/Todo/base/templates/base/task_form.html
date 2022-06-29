@@ -1,7 +1,41 @@
-<h3>Task Form</h3>
-<a href="{% url 'tasks' %}">Go Back</a>
+{% extends 'base/main.html' %}
+{% block content %}
+<div class="header">
+    <div class="d-flex justify-content-between mx-3">
+
+        <h3 class="mt-4">Task Form</h3>
+        <a  class="btn btn-outline-dark mt-4" href="{% url 'tasks' %}">Go Back</a>
+    </div>
+</div>  
+<br>
+{% load crispy_forms_tags %}
+
 <form action="" method="POST">
     {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Submit">
+    <div class="container d-flex">
+
+            <div class="col-1">
+            </div>
+            <div class="col-10">
+
+                    <div class="row-2">
+                        {{form.title|as_crispy_field}}
+                    </div>
+<br>
+                    <div class="row-6">
+                        
+                        {{form.description|as_crispy_field}}
+                    </div>
+                    <div class="row-4">
+<br>
+                        {{form.complete|as_crispy_field}}
+                        <br>
+                        <input class="btn btn-primary" type="submit" value="Submit">
+                    </div>
+            </div>
+            <div class="col-1">
+            </div>
+    </div>
+
 </form>
+{% endblock content %}
